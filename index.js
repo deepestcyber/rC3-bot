@@ -1,28 +1,11 @@
 const puppeteer = require('puppeteer');
-const chromeLauncher = require('chrome-launcher');
 const fs = require('fs');
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function launchChrome(headless = false) {
-    return chromeLauncher.launch({
-        // port: 9222, // Uncomment to force a specific port of your choice.
-        chromeFlags: [
-            '--window-size=640,480',
-            // '--disable-gpu',
-            headless ? '--headless' : ''
-        ]
-    });
-}
-
 (async () => {
-    // const chrome = await launchChrome();
-    // console.log(`Chrome debuggable on port: ${chrome.port}`);
-
-    // const resp = await util.promisify(request)(`http://localhost:${chrome.port}/json/version`);
-    // const { webSocketDebuggerUrl } = JSON.parse(resp.body);
     const mainjs = fs.readFileSync("./main.js", { encoding: 'utf8', flag: 'r' });
 
     const browser = await puppeteer.launch({
@@ -32,7 +15,6 @@ function launchChrome(headless = false) {
             height: 768,
         }
     });
-    // const browser = await puppeteer.connect({ browserWSEndpoint: webSocketDebuggerUrl });
 
     const page = await browser.newPage();
 
